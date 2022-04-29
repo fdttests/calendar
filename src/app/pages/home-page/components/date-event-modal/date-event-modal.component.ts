@@ -5,6 +5,8 @@ import { GetCitiesUseCase } from 'src/app/data/use-cases/city/get-cities.use-cas
 import CityModel from 'src/app/data/models/city/city.model';
 import ReminderModel from 'src/app/data/models/reminder/reminder.model';
 import ReminderStore from 'src/app/data/stores/reminder/reminder.store';
+import GetWeatherForecastByDateAndCityUseCase from 'src/app/data/use-cases/weather-forecast/get-weather-forecast-by-date-and-city.use-case';
+import WeatherForecastModel from 'src/app/data/models/weather-forecast/weather-forecast.model';
 
 @Component({
   selector: 'app-date-event-modal',
@@ -33,6 +35,7 @@ export class DateEventModalComponent implements OnInit {
   public constructor(
     private formBuilder: FormBuilder,
     private getCitiesUseCase: GetCitiesUseCase,
+    private getWeatherForecastByDateAndCityUseCase: GetWeatherForecastByDateAndCityUseCase,
     private reminderStore: ReminderStore
   ) { }
 
@@ -48,6 +51,7 @@ export class DateEventModalComponent implements OnInit {
       date: reminder.date,
     });
 
+    this.color = reminder.color;
     this.reminderId = reminder.id;
 
     this.modal.open();
@@ -58,14 +62,25 @@ export class DateEventModalComponent implements OnInit {
     this.eventForm.patchValue({ color });
   }
 
-  public save() {
-    const reminderData = {
+  public async save() {
+    const reminderData: ReminderModel = {
       id: this.reminderId,
       description: this.eventForm.controls['description'].value,
       color: this.eventForm.controls['color'].value,
       date: this.eventForm.controls['date'].value,
-      city: this.eventForm.controls['city'].value
+      city: this.eventForm.controls['city'].value,
+      forecast: undefined
     };
+
+    try {
+      reminderData.forecast = await this.getForecastByCityAndDate(
+        <CityModel>reminderData.city, 
+        reminderData.date
+      );
+    } catch (error) {
+      console.error(error);
+      reminderData.forecast = undefined;
+    }
 
     if (reminderData.id) {
       this.reminderStore.update(reminderData);
@@ -74,6 +89,18 @@ export class DateEventModalComponent implements OnInit {
     }
     
     this.modal.close();
+  }
+
+  private getForecastByCityAndDate(city: CityModel, date: Date): Promise<WeatherForecastModel | undefined> {
+    return new Promise((resolve, reject) => {
+      this.getWeatherForecastByDateAndCityUseCase.execute({
+        city, date
+      })
+      .subscribe({
+        next: (item) => resolve(item),
+        error: (item) => reject(item)
+      })
+    });
   }
 
   private loadCities() {
