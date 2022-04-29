@@ -22,4 +22,18 @@ describe('CalendarComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should render days', () => {
+    const compiled = fixture.debugElement.nativeElement;
+    const elements = compiled.querySelectorAll('[name="calendar-day"]');
+
+    expect(elements.length).toBe(42);
+  });
+
+  it('should render weekdays', () => {
+    const compiled = fixture.debugElement.nativeElement;
+    const elements = compiled.querySelectorAll('[name="calendar-week-day"]');
+
+    expect(elements.length).toBe(7);
+  });
 });
