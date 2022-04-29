@@ -1,8 +1,6 @@
 
 <h1 align="center">Calendar</h1>
 
-![Workflow Actions Node CI](https://github.com/fdttests/calendar/actions/workflows/ci.yml/badge.svg)
-
 App to manage reminders on calendar. Adittional information about the test can be seen [here](https://github.com/fdttests/calendar/blob/main/challenge.md).
 
 ## Demo
