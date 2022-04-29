@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CalendarModule } from 'src/app/components/calendar/calendar.module';
+import { DateEventModalComponent } from './components/date-event-modal/date-event-modal.component';
 
 import { HomePageComponent } from './home-page.component';
 
@@ -12,6 +13,7 @@ describe('HomePageComponent', () => {
       declarations: [ HomePageComponent ],
       imports: [
         CalendarModule,
+        DateEventModalComponent
       ]
     })
     .compileComponents();
