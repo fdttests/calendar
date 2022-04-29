@@ -3,7 +3,7 @@ import { MonthEnum } from '../../enums/month.enum';
 
 import { CompareDatesAreEqualUseCase } from './compare-dates-are-equal.use-case';
 
-fdescribe('CompareDatesAreEqualUseCase', () => {
+describe('CompareDatesAreEqualUseCase', () => {
     let service: CompareDatesAreEqualUseCase;
 
     beforeEach(() => {

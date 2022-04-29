@@ -5,6 +5,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { CalendarModule } from 'src/app/components/calendar/calendar.module';
 import { ModalModule } from 'src/app/components/modal/modal.module';
+import WeatherForecastRepositoryMock from 'src/app/data/mocks/weather-forecast/weather-forecast-repository.mock';
+import WeatherForecastRepository from 'src/app/data/repositories/weather-forecast/weather-forecast.repository';
 import { DateEventModalComponent } from './components/date-event-modal/date-event-modal.component';
 
 import { HomePageComponent } from './home-page.component';
@@ -18,6 +20,12 @@ describe('HomePageComponent', () => {
             declarations: [
                 HomePageComponent,
                 DateEventModalComponent
+            ],
+            providers: [
+                {
+                    provide: WeatherForecastRepository,
+                    useClass: WeatherForecastRepositoryMock
+                }
             ],
             imports: [
                 CalendarModule,
