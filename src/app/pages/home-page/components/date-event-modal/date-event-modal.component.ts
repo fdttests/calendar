@@ -4,6 +4,7 @@ import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { GetCitiesUseCase } from 'src/app/data/use-cases/city/get-cities.use-case';
 import CityModel from 'src/app/data/models/city/city.model';
 import ReminderModel from 'src/app/data/models/reminder/reminder.model';
+import ReminderStore from 'src/app/data/stores/reminder/reminder.store';
 
 @Component({
   selector: 'app-date-event-modal',
@@ -13,7 +14,7 @@ import ReminderModel from 'src/app/data/models/reminder/reminder.model';
 export class DateEventModalComponent implements OnInit {
   @ViewChild(ModalComponent)
   public modal!: ModalComponent;
-  
+
   public color: string = '#ffffff';
   
   public date!: Date;
@@ -21,15 +22,18 @@ export class DateEventModalComponent implements OnInit {
   public cities: Array<CityModel> = [];
 
   public eventForm = this.formBuilder.group({
-    description: new FormControl('', Validators.required),
+    description: new FormControl('', [Validators.required, Validators.max(30)]),
     city: new FormControl('', Validators.required),
     color: new FormControl('', Validators.required),
     date: new FormControl('', Validators.required),
   });
 
+  public reminderId?: string;
+
   public constructor(
     private formBuilder: FormBuilder,
-    private getCitiesUseCase: GetCitiesUseCase
+    private getCitiesUseCase: GetCitiesUseCase,
+    private reminderStore: ReminderStore
   ) { }
 
   public ngOnInit(): void {
@@ -44,6 +48,8 @@ export class DateEventModalComponent implements OnInit {
       date: reminder.date,
     });
 
+    this.reminderId = reminder.id;
+
     this.modal.open();
   }
 
@@ -53,7 +59,21 @@ export class DateEventModalComponent implements OnInit {
   }
 
   public save() {
-    console.log(this.eventForm.value);
+    const reminderData = {
+      id: this.reminderId,
+      description: this.eventForm.controls['description'].value,
+      color: this.eventForm.controls['color'].value,
+      date: this.eventForm.controls['date'].value,
+      city: this.eventForm.controls['city'].value
+    };
+
+    if (reminderData.id) {
+      this.reminderStore.update(reminderData);
+    } else {
+      this.reminderStore.add(reminderData);
+    }
+    
+    this.modal.close();
   }
 
   private loadCities() {

@@ -31,7 +31,20 @@
     </div>
 
     <div class="p-10">
-        <app-calendar [selectedDate]="selectedDate"></app-calendar>
+        <app-calendar [eventTemplate]="eventContainer" [events]="events" [selectedDate]="selectedDate"></app-calendar>
+        <ng-template let-event="event" #eventContainer>
+            <div (click)="editReminder(event)" [style.borderColor]="event.color" class="w-full border-b-2 border-l-2 rounded-md p-1 cursor-pointer text-xs bg-gray-600 hover:bg-gray-500 mt-1">
+                <div class="block">
+                    <span>
+                        {{ getFormattedEventHour(event) }}
+                    </span>
+                </div>
+
+                <span class="break-all">
+                    {{ event.description }}
+                </span>
+            </div>
+        </ng-template>
     </div>
 </div>
 

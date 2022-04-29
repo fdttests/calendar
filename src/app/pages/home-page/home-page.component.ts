@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import CalendarEventModel from 'src/app/data/models/calendar/calendar-event.model';
 import ReminderModel from 'src/app/data/models/reminder/reminder.model';
 import ReminderStore from 'src/app/data/stores/reminder/reminder.store';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AddMonthToDateUseCase } from 'src/app/data/use-cases/date/add-month-to-date.use-case';
 import { DateEventModalComponent } from './components/date-event-modal/date-event-modal.component';
 
@@ -14,7 +15,7 @@ export class HomePageComponent implements OnInit {
   public dateEventModal!: DateEventModalComponent;
 
   public selectedDate: Date = new Date();
-  public reminders: Array<ReminderModel> = [];
+  public events: Array<CalendarEventModel> = [];
 
   public constructor(
     private reminderStore: ReminderStore,
@@ -23,7 +24,14 @@ export class HomePageComponent implements OnInit {
 
   public ngOnInit(): void {
     this.reminderStore.get().subscribe((reminders) => {
-      this.reminders = reminders;
+      this.events = reminders.map((reminder) => {
+        return {
+          date: reminder.date,
+          color: reminder.color,
+          description: reminder.description,
+          data: reminder
+        };
+      });
     });
   }
 
@@ -31,6 +39,11 @@ export class HomePageComponent implements OnInit {
     this.selectedDate = this.addMonthToDateUseCase.execute({
       date: this.selectedDate,
       month: operation
+    });
+
+    this.reminderStore.applyFilter({
+      year: this.selectedDate.getFullYear(),
+      month: this.selectedDate.getMonth()
     });
   }
 
@@ -42,9 +55,24 @@ export class HomePageComponent implements OnInit {
     });
   }
 
+  public editReminder(calendarEvent: CalendarEventModel) {
+    this.dateEventModal.openWithReminder(calendarEvent.data);
+  }
+
   public getCurrentDateDescription() {
     const monthName = this.selectedDate.toLocaleString('default', { month: 'long' });
 
     return `${monthName} - ${this.selectedDate.getFullYear()}`;
+  }
+
+  public getFormattedEventHour(event: CalendarEventModel) {
+    const hours = event.date.getHours();
+    const minutes = event.date.getMinutes();
+    const amPm = hours >= 12 ? 'pm' : 'am';
+
+    const formattedHour = (hours % 12) ? hours : 12; // the hour '0' should be '12'
+    const formattedMinute = minutes < 10 ? '0'+minutes : minutes;
+    
+    return `${formattedHour}:${formattedMinute} ${amPm}`;
   }
 }
