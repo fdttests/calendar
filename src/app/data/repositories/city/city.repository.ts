@@ -1,6 +1,10 @@
+import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import CityModel from "../../models/city/city.model";
 
+@Injectable({
+    providedIn: 'root'
+})
 export default class CityRepository {
     public get(): Observable<Array<CityModel>> {
         return of([
