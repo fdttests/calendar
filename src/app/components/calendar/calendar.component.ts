@@ -1,4 +1,6 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import CalendarDateModel from 'src/app/data/models/calendar/calendar-date.model';
+import CalendarEventModel from 'src/app/data/models/calendar/calendar-event.model';
 import { GetDateRangeUseCase } from 'src/app/data/use-cases/date/get-date-range.use-case';
 
 @Component({
@@ -9,25 +11,38 @@ import { GetDateRangeUseCase } from 'src/app/data/use-cases/date/get-date-range.
 export class CalendarComponent implements OnChanges, OnInit {
 
   @Input() public selectedDate: Date = new Date();
+  @Input() public events: Array<CalendarEventModel> = [];
+  @Input() public eventTemplate!: TemplateRef<any>;
 
   public weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  public dateRange: Array<Date> = [];
+  public dateRange: Array<CalendarDateModel> = [];
 
   public constructor(
     private getDateRangeUseCase: GetDateRangeUseCase
   ) { }
 
   public ngOnInit(): void {
-    this.applyDateInterval(this.selectedDate);
+    this.applyDateInterval();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selectedDate'].currentValue) {
-      this.applyDateInterval(changes['selectedDate'].currentValue);
+    if (changes['selectedDate']?.currentValue || changes['events']?.currentValue) {
+      this.applyDateInterval();
     }
   }
 
-  private applyDateInterval(date: Date) {
-    this.dateRange = this.getDateRangeUseCase.execute(date);
+  private applyDateInterval() {
+    this.dateRange = this.getDateRangeUseCase.execute(this.selectedDate).map((date) => {
+      return {
+        date: date,
+        events: this.getEventsOnDate(date)
+      };
+    });
+  }
+
+  private getEventsOnDate(date: Date) {
+    return this.events.filter((event) => {
+      return event.date.toISOString().split("T")[0] === date.toISOString().split("T")[0];
+    });
   }
 }
