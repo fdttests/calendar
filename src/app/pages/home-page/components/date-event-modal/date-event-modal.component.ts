@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { GetCitiesUseCase } from 'src/app/data/use-cases/city/get-cities.use-case';
 import CityModel from 'src/app/data/models/city/city.model';
+import ReminderModel from 'src/app/data/models/reminder/reminder.model';
 
 @Component({
   selector: 'app-date-event-modal',
@@ -12,11 +13,11 @@ import CityModel from 'src/app/data/models/city/city.model';
 export class DateEventModalComponent implements OnInit {
   @ViewChild(ModalComponent)
   public modal!: ModalComponent;
-
-  public color: any;
-
-  public date: any;
-
+  
+  public color: string = '#ffffff';
+  
+  public date!: Date;
+  
   public cities: Array<CityModel> = [];
 
   public eventForm = this.formBuilder.group({
@@ -35,7 +36,14 @@ export class DateEventModalComponent implements OnInit {
     this.loadCities();
   }
 
-  public ngAfterViewInit() {
+  public openWithReminder(reminder: ReminderModel) {
+    this.eventForm.patchValue({
+      description: reminder.description,
+      city: reminder.city,
+      color: reminder.color,
+      date: reminder.date,
+    });
+
     this.modal.open();
   }
 

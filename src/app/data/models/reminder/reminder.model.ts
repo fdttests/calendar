@@ -1,8 +1,9 @@
 import CityModel from "../city/city.model";
 
 export default interface ReminderModel {
-    id: number;
+    id?: number;
     description: string;
-    city: CityModel;
+    color: string;
+    city?: CityModel;
     date: Date;
 }
