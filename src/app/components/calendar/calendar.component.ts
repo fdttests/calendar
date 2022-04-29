@@ -10,6 +10,7 @@ export class CalendarComponent implements OnChanges, OnInit {
 
   @Input() public selectedDate: Date = new Date();
 
+  public weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   public dateRange: Array<Date> = [];
 
   public constructor(
