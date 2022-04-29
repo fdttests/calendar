@@ -1,5 +1,11 @@
-<div>
-    <div *ngFor="let date of dateRange">
-        {{date | date:'d'}}
+<div class="bg-gray-800 shadow overflow-hidden">
+    <div class="flex flex-wrap border-gray-500 border-t border-l">
+        <div name="calendar-week-day" style="width: 14.28%; height: 30px" class="text-center border-gray-500 text-gray-300 border-r border-b px-4 font-bold" *ngFor="let weekDay of weekDays">
+            {{ weekDay }}
+        </div>
+
+        <div name="calendar-day" style="width: 14.28%; height: 100px" class="text-center border-gray-500 text-gray-300 border-r border-b px-4 pt-2" *ngFor="let date of dateRange">
+            {{ date | date:'d' }}
+        </div>
     </div>
 </div>
