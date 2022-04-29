@@ -33,6 +33,10 @@ Some simple use cases classes were implemented to isolate the communication betw
 
 For state management, the [elf](https://github.com/ngneat/elf) package was used.
 
+The required unit testing was made on the file `date-event-modal.component.spec.ts` basing on Angular's form state.
+
+For the weather, Open Weather Map api was used. The free version has a limitation of only getting the weather forecast of current date and next 7 days. The weather api needs the city to do the forecast, and because of that, a predetermined set of cities was used.
+
 A simple Github Action was added to guarantee that the install/test/eslint process is working as expected.
 
 ## Bonus
