@@ -43,4 +43,4 @@ export const marchMonthIntervalStub = [
     new Date(2022, MonthEnum.APRIL, 7),
     new Date(2022, MonthEnum.APRIL, 8),
     new Date(2022, MonthEnum.APRIL, 9),
-  ];
+];

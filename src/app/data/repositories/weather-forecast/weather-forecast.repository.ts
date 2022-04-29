@@ -32,27 +32,21 @@ export default class WeatherForecastRepository {
         return this.http
             .get<WeatherForecastResponseModel>(`${this.apiUrl}/onecall?${queryString}`)
             .pipe(
-                map((forecastResponse: WeatherForecastResponseModel) => {
-                    return forecastResponse.daily
-                        .filter((foreacast) => {
-                            return foreacast.weather && foreacast.weather.length > 0;
-                        })
-                        .map((forecast) => {
-                            const [weather] = forecast.weather;
+                map((forecastResponse: WeatherForecastResponseModel) => forecastResponse.daily
+                    .filter((foreacast) => foreacast.weather && foreacast.weather.length > 0)
+                    .map((forecast) => {
+                        const [weather] = forecast.weather;
 
-                            return {
-                                date: new Date(forecast.dt * 1000),
-                                icon: weather.icon,
-                                description: weather.description
-                            } as WeatherForecastModel;
-                        })
-                        .find((weather) => {
-                            return this.compareDatesAreEqualUseCase.execute({
-                                date1: weather.date,
-                                date2: date
-                            });
-                        });
-                })
+                        return {
+                            date: new Date(forecast.dt * 1000),
+                            icon: weather.icon,
+                            description: weather.description
+                        } as WeatherForecastModel;
+                    })
+                    .find((weather) => this.compareDatesAreEqualUseCase.execute({
+                        date1: weather.date,
+                        date2: date
+                    })))
             );
     }
 }

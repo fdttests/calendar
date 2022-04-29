@@ -1,15 +1,25 @@
 <div class="bg-gray-800 shadow overflow-hidden">
     <div class="flex flex-wrap border-gray-500 border-t border-l">
-        <div name="calendar-week-day" style="width: 14.28%; height: 30px"
-            class="text-center border-gray-500 text-gray-300 border-r border-b px-4 font-bold"
+        <div name="calendar-week-day" style="height: 30px;"
+            class="w-1/7 md:block hidden text-center border-gray-500 text-gray-300 border-r border-b px-4 font-bold"
             *ngFor="let weekDay of weekDays">
             {{ weekDay }}
         </div>
 
-        <div *ngFor="let date of dateRange" (click)="onClickDate.emit(date.date)" name="calendar-day" style="width: 14.28%; height: 130px"
-            class="overflow-auto hover:bg-gray-500 cursor-pointer border-gray-500 text-gray-300 border-r border-b px-4 pt-2">
-            <span class="">{{ date.date | date:'d' }}</span>
-            
+        <div *ngFor="let date of dateRange" [ngClass]="{
+                'text-gray-500': !isSameMonth(date.date),
+                'bg-gray-600': isWeekend(date.date),
+                'bg-blue-500 hover:bg-blue-500': isCurrentDate(date.date)
+            }" (click)="onClickDate.emit(date.date)" name="calendar-day" style="height: 130px"
+            class="md:w-1/7 w-full overflow-auto hover:border-b-white border-r border-b cursor-pointer border-gray-500 text-gray-300 px-4 pt-2">
+
+            <span class="">
+                {{ date.date | date:'d' }}
+                <span class="md:hidden inline-block">
+                    - {{ date.date | date:'EEEE' }}
+                </span>
+            </span>
+
             <ng-container *ngFor="let event of date.events">
                 <ng-template [ngTemplateOutlet]="eventTemplate" [ngTemplateOutletContext]="{
                     event: event
@@ -17,5 +27,7 @@
                 </ng-template>
             </ng-container>
         </div>
+        <!-- notInCurrentMonth: !inCurrentMonth(day.key) -->
+        <!-- today: isToday(day.key) -->
     </div>
 </div>

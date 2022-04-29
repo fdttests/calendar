@@ -1,5 +1,5 @@
 <div class="flex min-w-full relative justify-center text-gray-200">
-    <div *ngIf="isOpen" class="flex fixed min-w-full h-full inset-0 px-6 py-6 md:py-0 md:px-0 justify-center"
+    <div *ngIf="isOpen" class="flex fixed min-w-full h-full inset-0 justify-center"
         style="background: rgba(0,0,0,.7); z-index: 900 !important">
         <ng-container>
             <button class="fixed inset-0 h-full w-full bg-black opacity-0 cursor-default z-0" tabindex="-1"
@@ -7,8 +7,8 @@
             </button>
         </ng-container>
 
-        <div class="relative w-8/12 border border-gray-500 bg-gray-700 self-center rounded shadow-lg z-10"    
-        style="max-height: 85%;" @fade>
+        <div class="relative lg:w-8/12 w-full border border-gray-500 bg-gray-700 lg:min-h-0 min-h-full overflow-auto self-center rounded shadow-lg z-10"    
+        style="max-height: 90%;" @fade>
             <div class="text-left">
                 <div class="flex w-full items-center p-4">
                     <ng-content select='[modal-header]'></ng-content>

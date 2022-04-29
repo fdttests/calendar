@@ -17,8 +17,9 @@
                 <label for="date" class="block mb-2 text-sm font-medium">
                     Date
                 </label>
-                <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Date Time" formControlName="date" readonly="true"
-                    class="border block w-full text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 placeholder-gray-200 text-gray-200 focus:ring-blue-500 focus:border-blue-500" />
+                <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Date Time" formControlName="date"
+                    readonly="true"
+                    class="border block w-full h-10 outline-none text-sm rounded-lg p-2 bg-gray-700 border-gray-600 placeholder-gray-200 text-gray-200 focus:ring-blue-500 focus:border-blue-500" />
                 <owl-date-time #dt1></owl-date-time>
             </div>
 
@@ -27,7 +28,7 @@
                     City
                 </label>
                 <select formControlName="city" aria-placeholder="Choose a city"
-                    class="border block w-full text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 placeholder-gray-200 text-gray-200 focus:ring-blue-500 focus:border-blue-500">
+                    class="border block w-full h-10 outline-none text-sm rounded-lg p-2 bg-gray-700 border-gray-600 placeholder-gray-200 text-gray-200 focus:ring-blue-500 focus:border-blue-500">
                     <option [ngValue]="null" disabled>Choose a city</option>
                     <option *ngFor="let city of cities" [ngValue]="city">
                         {{ city.name }}
@@ -39,17 +40,20 @@
                 <label for="description" class="block mb-2 text-sm font-medium">
                     Description
                 </label>
-                <input formControlName="description"
-                    maxlength="30" class="border block w-full text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 placeholder-gray-200 text-gray-200 focus:ring-blue-500 focus:border-blue-500" />
+                <input formControlName="description" maxlength="30"
+                    class="border block w-full h-10 outline-none text-sm rounded-lg p-2 bg-gray-700 border-gray-600 placeholder-gray-200 text-gray-200 focus:ring-blue-500 focus:border-blue-500" />
             </div>
         </div>
     </div>
 
     <div modal-footer>
         <div class="flex w-full">
-            <button (click)="save()"
-                class="ml-auto bg-blue-700 border border-blue-700 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-blue-600">
-                Save
+            <button [disabled]="!eventForm.valid || isLoading" (click)="save()" [ngClass]="{
+                    'bg-blue-700 border-blue-700 hover:shadow-lg hover:bg-blue-600': eventForm.valid && !isLoading,
+                    'bg-gray-300 cursor-not-allowed': (!eventForm.valid || isLoading)
+                }"
+                class="ml-auto border px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full">
+                {{ isLoading ? 'Loading' : 'Save' }}
             </button>
         </div>
     </div>

@@ -5,12 +5,11 @@ import { CompareDatesAreEqualUseCase } from 'src/app/data/use-cases/date/compare
 import { GetDateRangeUseCase } from 'src/app/data/use-cases/date/get-date-range.use-case';
 
 @Component({
-  selector: 'app-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css']
+    selector: 'app-calendar',
+    templateUrl: './calendar.component.html',
+    styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnChanges, OnInit {
-
   @Input() public selectedDate: Date = new Date();
   @Input() public events: Array<CalendarEventModel> = [];
   @Input() public eventTemplate!: TemplateRef<any>;
@@ -26,30 +25,41 @@ export class CalendarComponent implements OnChanges, OnInit {
   ) { }
 
   public ngOnInit(): void {
-    this.applyDateInterval();
+      this.applyDateInterval();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selectedDate']?.currentValue || changes['events']?.currentValue) {
-      this.applyDateInterval();
-    }
+      if (changes['selectedDate']?.currentValue || changes['events']?.currentValue) {
+          this.applyDateInterval();
+      }
+  }
+
+  public isWeekend(date: Date) {
+      return [0, 6].includes(date.getDay());
+  }
+
+  public isCurrentDate(date: Date) {
+      return this.compareDatesAreEqualUseCase.execute({
+          date1: new Date(),
+          date2: date
+      });
+  }
+
+  public isSameMonth(date: Date) {
+      return date.getMonth() === this.selectedDate.getMonth();
   }
 
   private applyDateInterval() {
-    this.dateRange = this.getDateRangeUseCase.execute(this.selectedDate).map((date) => {
-      return {
-        date: date,
-        events: this.getEventsOnDate(date)
-      };
-    });
+      this.dateRange = this.getDateRangeUseCase.execute(this.selectedDate).map((date) => ({
+          date: date,
+          events: this.getEventsOnDate(date)
+      }));
   }
 
   private getEventsOnDate(date: Date) {
-    return this.events.filter((event) => {
-      return this.compareDatesAreEqualUseCase.execute({
-        date1: event.date,
-        date2: date
-      });
-    });
+      return this.events.filter((event) => this.compareDatesAreEqualUseCase.execute({
+          date1: event.date,
+          date2: date
+      })).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }
 }

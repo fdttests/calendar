@@ -43,4 +43,4 @@ export const aprilMonthIntervalStub = [
     new Date(2022, MonthEnum.MAY, 5),
     new Date(2022, MonthEnum.MAY, 6),
     new Date(2022, MonthEnum.MAY, 7),
-  ];
+];

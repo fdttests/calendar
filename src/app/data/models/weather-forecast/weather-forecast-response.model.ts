@@ -1,11 +1,11 @@
-type Weather = {
+interface Weather {
     id: number;
     main: string;
     description: string;
     icon: string;
-}
+};
 
-type Forecast = {
+interface Forecast {
     dt: number;
     sunrise: number;
     sunset: number;
@@ -19,8 +19,8 @@ type Forecast = {
     visibility: number;
     wind_speed: number;
     wind_deg: number;
-    weather: Array<Weather>
-};
+    weather: Array<Weather>;
+}
 
 export default interface WeatherForecastResponseModel {
     lat: number;
@@ -28,5 +28,5 @@ export default interface WeatherForecastResponseModel {
     timezone: string;
     timezone_offset: number;
     current: Forecast;
-    daily: Array<Forecast>
+    daily: Array<Forecast>;
 };

@@ -10,26 +10,26 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 const routes: Routes = [
-  {
-      "path": "",
-      "component": HomePageComponent
-  }
+    {
+        "path": "",
+        "component": HomePageComponent
+    }
 ];
 
 @NgModule({
-  declarations: [
-    HomePageComponent,
-    DateEventModalComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    ReactiveFormsModule,
-    CalendarModule,
-    ModalModule,
-    ColorPickerModule,
-    OwlDateTimeModule, 
-    OwlNativeDateTimeModule,
-  ]
+    declarations: [
+        HomePageComponent,
+        DateEventModalComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        ReactiveFormsModule,
+        CalendarModule,
+        ModalModule,
+        ColorPickerModule,
+        OwlDateTimeModule,
+        OwlNativeDateTimeModule,
+    ]
 })
 export class HomePageModule { }

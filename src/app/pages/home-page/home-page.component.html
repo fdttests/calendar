@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-gray-700">
-    <div class="flex flex-no-shrink h-12 w-full px-10 bg-gray-800">
+    <div class="flex flex-no-shrink h-12 w-full px-2 lg:px-10 bg-gray-800">
         <span
             class="flex-no-grow flex-no-shrink relative py-2 leading-normal text-white no-underline flex items-center hover:bg-grey-dark">
             {{ getCurrentDateDescription() }}
@@ -30,7 +30,7 @@
         </button>
     </div>
 
-    <div class="p-10">
+    <div class="py-10 px-2 lg:px-10">
         <app-calendar (onClickDate)="addReminder($event)" [eventTemplate]="eventContainer" [events]="events" [selectedDate]="selectedDate"></app-calendar>
         <ng-template let-event="event" #eventContainer>
             <div (click)="editReminder(event);$event.stopPropagation()" [style.borderColor]="event.color"

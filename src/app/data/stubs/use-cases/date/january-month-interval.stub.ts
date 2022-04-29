@@ -43,4 +43,4 @@ export const januaryMonthIntervalStub = [
     new Date(2022, MonthEnum.FEBRUARY, 3),
     new Date(2022, MonthEnum.FEBRUARY, 4),
     new Date(2022, MonthEnum.FEBRUARY, 5),
-  ];
+];
