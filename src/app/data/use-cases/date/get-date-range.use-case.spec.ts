@@ -6,7 +6,7 @@ import { januaryMonthIntervalStub } from '../../stubs/use-cases/date/january-mon
 import { marchMonthIntervalStub } from '../../stubs/use-cases/date/march-month-interval.stub';
 import { GetDateRangeUseCase } from './get-date-range.use-case';
 
-fdescribe('GetDateRangeUseCase', () => {
+describe('GetDateRangeUseCase', () => {
   let service: GetDateRangeUseCase;
 
   beforeEach(() => {
@@ -14,11 +14,11 @@ fdescribe('GetDateRangeUseCase', () => {
     service = TestBed.inject(GetDateRangeUseCase);
   });
 
-  fit('should be created', () => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  fit('should return the right range with given date', () => {
+  it('should return the right range with given date', () => {
     const januaryDate = new Date(2022, MonthEnum.JANUARY, 31);
     const februaryDate = new Date(2022, MonthEnum.FEBRUARY, 1);
     const marchDate = new Date(2022, MonthEnum.MARCH, 13);
