@@ -6,11 +6,10 @@
             {{ weekDay }}
         </div>
 
-        <div name="calendar-day" style="width: 14.28%; height: 130px"
-            class="overflow-auto border-gray-500 text-gray-300 border-r border-b px-4 pt-2"
-            *ngFor="let date of dateRange">
-            <span class="block">{{ date.date | date:'d' }}</span>
-
+        <div *ngFor="let date of dateRange" (click)="onClickDate.emit(date.date)" name="calendar-day" style="width: 14.28%; height: 130px"
+            class="overflow-auto hover:bg-gray-500 cursor-pointer border-gray-500 text-gray-300 border-r border-b px-4 pt-2">
+            <span class="">{{ date.date | date:'d' }}</span>
+            
             <ng-container *ngFor="let event of date.events">
                 <ng-template [ngTemplateOutlet]="eventTemplate" [ngTemplateOutletContext]="{
                     event: event

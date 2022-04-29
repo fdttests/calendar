@@ -1,9 +1,9 @@
 import CalendarEventModel from 'src/app/data/models/calendar/calendar-event.model';
-import ReminderModel from 'src/app/data/models/reminder/reminder.model';
 import ReminderStore from 'src/app/data/stores/reminder/reminder.store';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AddMonthToDateUseCase } from 'src/app/data/use-cases/date/add-month-to-date.use-case';
 import { DateEventModalComponent } from './components/date-event-modal/date-event-modal.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home-page',
@@ -19,7 +19,8 @@ export class HomePageComponent implements OnInit {
 
   public constructor(
     private reminderStore: ReminderStore,
-    private addMonthToDateUseCase: AddMonthToDateUseCase
+    private addMonthToDateUseCase: AddMonthToDateUseCase,
+    private domSanitizer: DomSanitizer
   ) { }
 
   public ngOnInit(): void {
@@ -47,16 +48,20 @@ export class HomePageComponent implements OnInit {
     });
   }
 
-  public addReminder() {
+  public addReminder(date = new Date()) {
     this.dateEventModal.openWithReminder({
       description: '',
       color: '#ffffff',
-      date: new Date()
+      date,
     });
   }
 
   public editReminder(calendarEvent: CalendarEventModel) {
     this.dateEventModal.openWithReminder(calendarEvent.data);
+  }
+
+  public getIcon(calendarEvent: CalendarEventModel) {
+    return this.domSanitizer.bypassSecurityTrustUrl(`https://openweathermap.org/img/w/${calendarEvent.data.forecast.icon}.png`);
   }
 
   public getCurrentDateDescription() {

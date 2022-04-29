@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gray-700">
-    <div class="flex flex-no-shrink h-12 w-full bg-gray-800">
+    <div class="flex flex-no-shrink h-12 w-full px-10 bg-gray-800">
         <span
-            class="flex-no-grow flex-no-shrink relative py-2 px-4 leading-normal text-white no-underline flex items-center hover:bg-grey-dark">
+            class="flex-no-grow flex-no-shrink relative py-2 leading-normal text-white no-underline flex items-center hover:bg-grey-dark">
             {{ getCurrentDateDescription() }}
         </span>
 
@@ -15,15 +15,15 @@
             </span>
         </button>
 
-        <button (click)="setMonth(-1)" class="block cursor-pointer w-12 h-12 p-4">
-            <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+        <button (click)="setMonth(-1)" class="block cursor-pointer self-center px-2">
+            <svg class="fill-current text-white w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
         </button>
 
-        <button (click)="setMonth(+1)" class="block cursor-pointer w-12 h-12 p-4">
-            <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+        <button (click)="setMonth(+1)" class="block cursor-pointer self-center">
+            <svg class="fill-current text-white w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
@@ -31,12 +31,28 @@
     </div>
 
     <div class="p-10">
-        <app-calendar [eventTemplate]="eventContainer" [events]="events" [selectedDate]="selectedDate"></app-calendar>
+        <app-calendar (onClickDate)="addReminder($event)" [eventTemplate]="eventContainer" [events]="events" [selectedDate]="selectedDate"></app-calendar>
         <ng-template let-event="event" #eventContainer>
-            <div (click)="editReminder(event)" [style.borderColor]="event.color" class="w-full border-b-2 border-l-2 rounded-md p-1 cursor-pointer text-xs bg-gray-600 hover:bg-gray-500 mt-1">
+            <div (click)="editReminder(event);$event.stopPropagation()" [style.borderColor]="event.color"
+                class="w-full border-b-2 border-l-2 rounded-md p-1 cursor-pointer text-xs bg-gray-600 hover:bg-gray-400 hover:text-white mt-1">
                 <div class="block">
                     <span>
                         {{ getFormattedEventHour(event) }}
+                    </span>
+
+                    <span class="float-right text-red-400">
+                        <ng-container *ngIf="event?.data?.forecast; else elseIcon">
+                            <img [title]="event.data.forecast.description" class="h-6" [src]="getIcon(event)" />
+                        </ng-container>
+                        <ng-template #elseIcon>
+                            <span title="weather data unavailable">
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </span>
+                        </ng-template>
                     </span>
                 </div>
 

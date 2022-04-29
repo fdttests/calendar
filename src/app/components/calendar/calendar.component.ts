@@ -1,6 +1,7 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 import CalendarDateModel from 'src/app/data/models/calendar/calendar-date.model';
 import CalendarEventModel from 'src/app/data/models/calendar/calendar-event.model';
+import { CompareDatesAreEqualUseCase } from 'src/app/data/use-cases/date/compare-dates-are-equal.use-case';
 import { GetDateRangeUseCase } from 'src/app/data/use-cases/date/get-date-range.use-case';
 
 @Component({
@@ -14,11 +15,14 @@ export class CalendarComponent implements OnChanges, OnInit {
   @Input() public events: Array<CalendarEventModel> = [];
   @Input() public eventTemplate!: TemplateRef<any>;
 
+  @Output() public onClickDate = new EventEmitter<Date>();
+
   public weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   public dateRange: Array<CalendarDateModel> = [];
 
   public constructor(
-    private getDateRangeUseCase: GetDateRangeUseCase
+    private getDateRangeUseCase: GetDateRangeUseCase,
+    private compareDatesAreEqualUseCase: CompareDatesAreEqualUseCase
   ) { }
 
   public ngOnInit(): void {
@@ -42,7 +46,10 @@ export class CalendarComponent implements OnChanges, OnInit {
 
   private getEventsOnDate(date: Date) {
     return this.events.filter((event) => {
-      return event.date.toISOString().split("T")[0] === date.toISOString().split("T")[0];
+      return this.compareDatesAreEqualUseCase.execute({
+        date1: event.date,
+        date2: date
+      });
     });
   }
 }
