@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "serve": "ngtw build -c ng-tailwind-config.js && ng serve",
     "build": "ngtw build -p -c ng-tailwind-config.js && ng build --aot",
     "watch": "ng build --watch --configuration development",
+    "test:prod": "ng test --browsers=ChromeHeadless --watch=false --code-coverage",
     "lint": "eslint . --ext .ts",
     "fix-lint": "eslint . --ext .ts --fix",
-    "test": "ng test",
-    "test:prod": "ng test --browsers=ChromeHeadless --watch=false --code-coverage"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
