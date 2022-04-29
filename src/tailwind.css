@@ -1,5 +1,23 @@
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
 @tailwind base;
 
 @tailwind components;
 
 @tailwind utilities;
+
+.owl-dt-inline-container, .owl-dt-popup-container {
+    background-color: #374151;
+}
+
+.owl-dt-control-period-button .owl-dt-control-button-arrow {
+    display: none;
+}
+
+.owl-dt-control-button,
+.owl-dt-timer-divider,
+.owl-dt-calendar-table .owl-dt-calendar-header,
+.owl-dt-control-period-button .owl-dt-control-button-content,
+.owl-dt-calendar-table .owl-dt-calendar-cell {
+    color: white;
+}
